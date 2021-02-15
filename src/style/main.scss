@@ -1,0 +1,130 @@
+@import './variables.scss';
+@import './components.scss';
+@import './flex.scss';
+@import './typograph.scss';
+
+@function pow($base, $exp) {
+    $res: 1;
+    @for $i from 1 through $exp {
+        $res: $res * $base;
+    }
+    @return $res;
+}
+
+@each $name, $color in $colors {
+    .c-#{$name} {
+        color: $color;
+    }
+
+    .b-#{$name} {
+        background-color: $color;
+    }
+
+    @for $i from 1 through 10 {
+        .br-#{$name}-#{$i} {
+            border: solid $color $i + px;
+        }
+    }
+}
+@for $i from 0 through 10 {
+    .h-#{$i} {
+        height: pow(2, $i) + px;
+    }
+    .w-#{$i} {
+        width: pow(2, $i) + px;
+    }
+    .pa-#{$i} {
+        padding: pow(2, $i) + px;
+    }
+    .ph-#{$i} {
+        padding-left: pow(2, $i) + px;
+        padding-right: pow(2, $i) + px;
+    }
+    .pb-#{$i} {
+        padding-bottom: pow(2, $i) + px;
+    }
+    .ma-#{$i} {
+        margin: pow(2, $i) + px;
+    }
+    .mt-#{$i} {
+        margin-top: pow(2, $i) + px !important;
+    }
+    .mb-#{$i} {
+        margin-bottom: pow(2, $i) + px !important;
+    }
+    .ml-#{$i} {
+        margin-left: pow(2, $i) + px;
+    }
+}
+
+body {
+    margin: 0;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.h100 {
+    height: 100%;
+}
+
+
+// ЭНЭ CSS ЯМАР УЧИРТАЙГ САЙН СУДЛАХ
+* {
+    box-sizing: border-box;
+}
+*:focus {
+    outline: none;
+}
+@media only screen and (max-width: 500px) {
+    .w-9 {
+        width: auto;
+        // max-width: 400px;
+    }
+}
+.pointer {
+    cursor: pointer;
+}
+.normal {
+    cursor: default;
+}
+.hide {
+    display: none;
+}
+@for $i from 1 to 100 {
+    .br-#{$i} {
+        border-radius: $i + px;
+    }
+}
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+.drop {
+    right: 0;
+    top: -20px;
+}
+@for $i from -10 to 10 {
+    .left#{$i} {
+        left: $i + px;
+    }
+    .right#{$i} {
+        right: $i + px;
+    }
+    .top#{$i} {
+        top: $i + px;
+    }
+    .bottom#{$i} {
+        bottom: $i + px;
+    }
+}
+.boginoo-icon {
+    width: 90px;
+    transition: width 1s ease-in-out;
+}
+.boginoo-icon:hover {
+    width: 150px;
+}
