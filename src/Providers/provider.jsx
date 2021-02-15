@@ -50,9 +50,9 @@ export const Provider = ({children}) => {
         }else {
             setSignInInput({...signInInput, [e.target.id]: e.target.value})
         }
-        if (start) setStart(false);
     }
     const burtguuleh = async () => {
+        setStart(false);
         if (signInInput.password === signInInput.passwordagain) {
             await auth.createUserWithEmailAndPassword(signInInput.email, signInInput.password)
                 .then(() => {
@@ -68,6 +68,7 @@ export const Provider = ({children}) => {
         }
     }
     const oroh = async () => {
+        setStart(false);
         console.log(start);
         localStorage.setItem('remember', `${logInInput.sanah}`);
         await auth.signInWithEmailAndPassword(logInInput.email, logInInput.password)

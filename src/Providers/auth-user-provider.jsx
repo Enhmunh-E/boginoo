@@ -37,7 +37,7 @@ export const AuthProvider = ({children}) => {
             // user ? setState({user: user, userReady: true}) : setState({user: null, userReady: true});
           });
         return () => subscribe();
-    }, [auth])
+    }, [auth, start])
 
     return(
         <AuthContext.Provider value={{ ...state, setStart, start }}>
