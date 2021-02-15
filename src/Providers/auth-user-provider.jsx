@@ -3,6 +3,7 @@ import { auth } from '../components/firebase'
 export const AuthContext = createContext({
     user: null,
     userReady: false,
+    start: true,
     setStart: () => {}
 })
 export const AuthProvider = ({children}) => {
@@ -23,9 +24,11 @@ export const AuthProvider = ({children}) => {
                     if (value === "false") {
                         setState({user: null, userReady: true});
                     }else {
+                        console.log("orson");
                         setState({user: user, userReady: true});
                     }
                 }else {
+                    console.log("orson");
                     setState({user: user, userReady: true});
                 }
             }else {
@@ -34,10 +37,10 @@ export const AuthProvider = ({children}) => {
             // user ? setState({user: user, userReady: true}) : setState({user: null, userReady: true});
           });
         return () => subscribe();
-    }, [auth, value])
+    }, [auth])
 
     return(
-        <AuthContext.Provider value={{ ...state, setStart }}>
+        <AuthContext.Provider value={{ ...state, setStart, start }}>
             {children}
         </AuthContext.Provider>
     )
