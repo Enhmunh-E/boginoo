@@ -18,17 +18,14 @@ export const AuthProvider = ({children}) => {
             return
         }
         const subscribe = auth.onAuthStateChanged(async (user) => {
-            console.log(user ? "user here" : "no user", value === "false" ? "no remember" : "remember", start ? "ehleh" : "nt ehleh");
             if (user) {
                 if (start) {
                     if (value === "false") {
                         setState({user: null, userReady: true});
                     }else {
-                        console.log("orson");
                         setState({user: user, userReady: true});
                     }
                 }else {
-                    console.log("orson");
                     setState({user: user, userReady: true});
                 }
             }else {

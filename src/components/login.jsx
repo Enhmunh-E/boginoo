@@ -4,11 +4,32 @@ import { Context } from '../Providers/provider'
 import { useHistory } from 'react-router-dom'
 import { Input } from './input'
 import { Button } from './button'
-import { auth } from './firebase'
+import { auth, db } from './firebase'
+import { AuthContext } from "../Providers/auth-user-provider";
 const Login = () => {
-    const {  logInInput, handler, oroh, error, setError } = useContext(Context);
     const history = useHistory();
     const [sent, setSent] = useState('');
+    const [error, setError] = useState('');
+    const [logInInput, setLogInInput] = useState({
+        email: '',
+        password: '',
+        sanah: false
+    });
+    const { setDt } = useContext(Context);
+    const { setStart } = useContext(AuthContext); 
+    const oroh = async () => {
+        setStart(false);
+        localStorage.setItem('remember', `${logInInput.sanah}`);
+        await auth.signInWithEmailAndPassword(logInInput.email, logInInput.password)
+        .then(() => {
+            getinformation();
+            history.push('/');
+        })
+        .catch((error) => {
+            var errorMessage = error.message;
+            setError(errorMessage);
+        });
+    }
     const send = () => {
         auth.sendPasswordResetEmail(logInInput.email).then(() => {
             setSent('Мэйл явсан');
@@ -17,11 +38,26 @@ const Login = () => {
             setError(error.message);
         });
     }
+    const handler = (e, is) => {
+        setError('');
+        if (e.target.type === 'checkbox') {
+            setLogInInput({...logInInput, [e.target.id]: e.target.checked});
+        }else setLogInInput({...logInInput, [e.target.id]: e.target.value});
+    }
+    const getinformation = async () => {
+        const docRef = db.collection('users').doc(logInInput.email);
+        const doc = await docRef.get();
+        if (!doc.exists) {
+            console.log('No such document!');
+        } else {
+            setDt(doc.data());
+        }
+    }
     return (
         <>
             <div className="c-primary fs-28 lh-40 text-center bold font-ubuntu ma-5">Нэвтрэх</div>
             <span className="pb-2 w-8 ph-4 font-ubuntu">Цахим хаяг</span>
-            <Input placeholder="name@mail.domai" className="h-5 w-8 ph-5 ma-5 mt-0" type="email" id="email" value={logInInput.email} onChange={(e) => handler(e, "login")}/>
+            <Input placeholder="name@mail.domain" className="h-5 w-8 ph-5 ma-5 mt-0" type="email" id="email" value={logInInput.email} onChange={(e) => handler(e, "login")}/>
             <span className="pb-2 w-8 ph-4 font-ubuntu">Нууц үг</span>
             <Input placeholder="password" className="h-5 w-8 ph-5 ma-5 mt-0" type="password" id="password" value={logInInput.password} onChange={(e) => handler(e, "login")}/>
             <div className="flex items-center w-8 justify-between">
