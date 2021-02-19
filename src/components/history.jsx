@@ -6,14 +6,12 @@ export const History = () => {
     const { user } = useContext(AuthContext);
     const [data, setData] = useState([]);
     useEffect(() => {
-        db.collection('shorted').where('user','==', user.email).orderBy('createdAt', 'desc')
+        db.collection('shorted').where('user','==', user.email)
         .onSnapshot((snapshot) => {
-            console.log(snapshot);
             const dt = snapshot.docs.map(doc => doc.data());
-            setData(_.orderBy(dt, ['createdAt'], ['desc']));
+            setData(dt);
         })
     }, [firebase.firestore])
-    console.log(data);
     return (
         <div>
             <h1 className='font-ubuntu c-primary ph-4'>Түүх</h1>
