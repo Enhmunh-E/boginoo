@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
     "firebase": "^8.2.6",
+    "lodash": "^4.17.20",
     "node-gyp": "^7.1.2",
     "node-sass": "^4.14.1",
     "npm": "^7.5.2",

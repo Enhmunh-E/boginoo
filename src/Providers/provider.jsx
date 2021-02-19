@@ -5,20 +5,20 @@ export const Context = createContext({
     error: '',
     userInfo: '',
     drop: '',
-    dt: [],
+    isHistory: false,
     setError: () => {},
     setDrop: () => {},
     setIsLogin: () => {},
     setIsLoginSign: () => {},
-    setDt: () => {},
+    setIsHistory: () => {}
 })
 export const Provider = ({children}) => {
     const [drop, setDrop] = useState(false);
-    const [dt, setDt] = useState({});
     const [isLoginSign, setIsLoginSign] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
+    const [isHistory, setIsHistory] = useState(false);
     return(
-        <Context.Provider value={{ isLoginSign, setIsLoginSign, isLogin, setIsLogin, drop, setDrop, dt, setDt }}>
+        <Context.Provider value={{ isLoginSign, setIsLoginSign, isLogin, setIsLogin, drop, setDrop, isHistory, setIsHistory }}>
             {children}
         </Context.Provider>
     )

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import { useLocation, Redirect, useHistory } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import { db } from '../components/firebase'
 export const Shortener = () => {
     const location = useLocation();
     const history = useHistory();
-    const url = 'localhost:3000' + location.pathname;
+    const url = 'https://boginoo-1.web.app' + location.pathname;
     console.log(url);
     useEffect(() => {
         db.collection('shorted').doc(location.pathname.substring(1)).get()

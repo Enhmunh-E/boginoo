@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import React from 'react'
-import { Context } from '../Providers/provider'
 import { useHistory } from 'react-router-dom'
 import { Input } from './input'
 import { Button } from './button'
@@ -15,14 +14,12 @@ const Login = () => {
         password: '',
         sanah: false
     });
-    const { setDt } = useContext(Context);
     const { setStart } = useContext(AuthContext); 
     const oroh = async () => {
         setStart(false);
         localStorage.setItem('remember', `${logInInput.sanah}`);
         await auth.signInWithEmailAndPassword(logInInput.email, logInInput.password)
         .then(() => {
-            getinformation();
             history.push('/');
         })
         .catch((error) => {
@@ -38,20 +35,11 @@ const Login = () => {
             setError(error.message);
         });
     }
-    const handler = (e, is) => {
+    const handler = (e) => {
         setError('');
         if (e.target.type === 'checkbox') {
             setLogInInput({...logInInput, [e.target.id]: e.target.checked});
         }else setLogInInput({...logInInput, [e.target.id]: e.target.value});
-    }
-    const getinformation = async () => {
-        const docRef = db.collection('users').doc(logInInput.email);
-        const doc = await docRef.get();
-        if (!doc.exists) {
-            console.log('No such document!');
-        } else {
-            setDt(doc.data());
-        }
     }
     return (
         <>

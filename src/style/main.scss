@@ -68,6 +68,9 @@ body {
 .h100 {
     height: 100%;
 }
+.w50 {
+    width: 50%;
+}
 
 
 // ЭНЭ CSS ЯМАР УЧИРТАЙГ САЙН СУДЛАХ
@@ -130,4 +133,7 @@ body {
 }
 .bogin {
     width: pow(2, 8) + px;
+}
+.over-hidden {
+    overflow: hidden;
 }

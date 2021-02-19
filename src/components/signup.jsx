@@ -1,13 +1,11 @@
 import { useContext, useState } from "react";
 import React from 'react'
-import { auth, db } from './firebase'
-import { Context } from '../Providers/provider'
+import { auth } from './firebase'
 import { Input } from './input'
 import { Button } from './button'
 import { AuthContext } from "../Providers/auth-user-provider"
 import { useHistory } from "react-router-dom";
 const SignUp = () => {
-    const { setDt } = useContext(Context);
     const { setStart } = useContext(AuthContext);
     const [error, setError] = useState('');
     const [signInInput, setSignInInput] = useState({
@@ -25,8 +23,6 @@ const SignUp = () => {
         if (signInInput.password === signInInput.passwordagain) {
             await auth.createUserWithEmailAndPassword(signInInput.email, signInInput.password)
                 .then(() => {
-                    setDt({});
-                    addinformation();
                     history.push('/');
                 }).catch((error) => {
                     var errorMessage = error.message;
@@ -35,12 +31,6 @@ const SignUp = () => {
         }else {
             setError('Password is not same');
         }
-    }
-    const addinformation = async () => {
-        const docRef = db.collection('users').doc(signInInput.email);
-        await docRef.set({
-            shorted: []
-        });
     }
     return (
         <>
