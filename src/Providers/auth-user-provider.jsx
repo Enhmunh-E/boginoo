@@ -31,7 +31,6 @@ export const AuthProvider = ({children}) => {
             }else {
                 setState({user: null, userReady: true});
             }
-            // user ? setState({user: user, userReady: true}) : setState({user: null, userReady: true});
           });
         return () => subscribe();
     }, [auth, start])

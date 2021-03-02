@@ -1,20 +1,22 @@
 import React, { useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { db } from '../components/firebase'
+import { Loading } from '../components';
+import { useCollection } from '../Hooks';
 export const Shortener = () => {
     const location = useLocation();
     const history = useHistory();
-    const url = 'https://boginoo-1.web.app' + location.pathname;
-    console.log(url);
+    const { doc } = useCollection(location.pathname.substring(1), 'doc');
     useEffect(() => {
-        db.collection('shorted').doc(location.pathname.substring(1)).get()
-        .then((doc) => {
-            window.location.href = doc.data().inputUrl;
-        }).catch(() => {
+        if (doc) {
+            window.location.href = doc.inputUrl;
+        }else {
             history.push('/');
-        });
-    }, [])
+        }
+        return () => {}
+    }, []);
     return (
-        <div className='w100 h100 flex-cetner'><p>Loading...</p></div>
+        <div className='w100 h100 flex-cetner'>
+            <Loading plays={true}/>
+        </div>
     );
 }

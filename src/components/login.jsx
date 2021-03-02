@@ -3,7 +3,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Input } from './input'
 import { Button } from './button'
-import { auth, db } from './firebase'
+import { auth } from './firebase'
 import { AuthContext } from "../Providers/auth-user-provider";
 const Login = () => {
     const history = useHistory();

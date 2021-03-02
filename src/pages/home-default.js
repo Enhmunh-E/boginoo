@@ -1,14 +1,19 @@
 import React, { useContext, useState } from 'react';
-import { Layout, Button, Input, Logo, Boginosson, History} from '../components';
+import { Layout, Button, Input, Logo, Boginosson, History, Loading} from '../components';
 import { Context } from '../Providers/provider'
 import { useHistory } from 'react-router-dom'
-import { auth, db, firebase } from '../components/firebase'
+import { auth, firebase } from '../components/firebase'
 import Randomstring from 'randomstring'
 import { AuthContext } from '../Providers/auth-user-provider';
+import { useCollection } from '../Hooks'
+// import { create } from 'lodash';
+
 export const HomeDefault = () => {
     const history = useHistory();
     const { drop, setDrop, isHistory, setIsHistory } = useContext(Context);
     const { user } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const { createDoc } = useCollection('shorted', 'other');
     const logout = () => {
         localStorage.setItem('remember', 'false');
         auth.signOut();
@@ -19,19 +24,23 @@ export const HomeDefault = () => {
         urt: ''
     })
     const [errorMessage, setErrorMessage] = useState('');
-    const boginosgoh = async () => {
+    const boginosgoh = () => {
         if (url.urt.length > 7 && url.urt.substring(0, 4) === 'http') {
+            setIsLoading(true);
             setErrorMessage('');
             const random = Randomstring.generate(7);
             const path = 'https://boginoo-1.web.app/' + random;
             setIsHistory(false);
+            if (user !== null) {
+                createDoc(random, {
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    user: user.email,
+                    inputUrl: url.urt,
+                    outputUrl: path,
+                });
+                setIsLoading(false);
+            }
             setUrl({...url, bogino: path});
-            await db.collection('shorted').doc(random).set({
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                user: user.email,
-                inputUrl: url.urt,
-                outputUrl: path,
-            });
         }else {
             setErrorMessage('Урт нь 7 оос их эхлэл нь заавал http гээр эхэлсэн бүрэн веб үрл байх хэрэгтэй!');
         }
@@ -50,6 +59,11 @@ export const HomeDefault = () => {
                     <Input placeholder='https://www.web-huudas.mn' className="w-9 h-5 ph-5" onChange={(e) => setUrl({urt: e.target.value, bogino: ''})} value={url.urt}/>
                     <Button onClick={boginosgoh} className={`pointer ${url.urt === '' ? 'disabled' : ''}`}>Богиносгох</Button>
                 </div>
+                {
+                    isLoading && (
+                        <Loading plays={isLoading}/>
+                    )
+                }
                 {
                     errorMessage && (
                         <div className='mt-5 flex-center'>
