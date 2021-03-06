@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { auth, firebase } from '../components/firebase'
 import Randomstring from 'randomstring'
 import { AuthContext } from '../Providers/auth-user-provider';
-import { useCollection } from '../Hooks'
+import { useDoc } from '../Hooks'
 // import { create } from 'lodash';
 
 export const HomeDefault = () => {
@@ -13,26 +13,29 @@ export const HomeDefault = () => {
     const { drop, setDrop, isHistory, setIsHistory } = useContext(Context);
     const { user } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false);
-    const { createDoc } = useCollection('shorted', 'other');
+    const { createDoc } = useDoc({path: ''})
     const logout = () => {
         localStorage.setItem('remember', 'false');
         auth.signOut();
         setDrop(false);
     }
+    
     const [url, setUrl] = useState({
         bogino: '',
         urt: ''
     })
+    
     const [errorMessage, setErrorMessage] = useState('');
-    const boginosgoh = () => {
+    
+    const boginosgoh = async () => {
         if (url.urt.length > 7 && url.urt.substring(0, 4) === 'http') {
             setIsLoading(true);
             setErrorMessage('');
             const random = Randomstring.generate(7);
-            const path = 'https://boginoo-1.web.app/' + random;
+            const path = 'http://localhost:3000/' + random;
             setIsHistory(false);
             if (user !== null) {
-                createDoc(random, {
+                await createDoc(['enkhmunkh', 'test', 'shorted', random], {
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     user: user.email,
                     inputUrl: url.urt,
@@ -45,6 +48,7 @@ export const HomeDefault = () => {
             setErrorMessage('Урт нь 7 оос их эхлэл нь заавал http гээр эхэлсэн бүрэн веб үрл байх хэрэгтэй!');
         }
     }
+
     return (
         <Layout>
             <div className='h100 flex-center relative'>
