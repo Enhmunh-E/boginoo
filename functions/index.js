@@ -39,3 +39,20 @@ exports.enkhmunkhFunctions = functions.firestore
             // [data.outputUrl]: data.inputUrl
         })
     });
+exports.enkhmunkhNewFunction = functions.auth.user().onCreate(async (user) => {
+    await db.collection('enkhmunkh/test/users')
+    .doc(`${user.email}`)
+    .set({
+        email: user.email,
+        uid: user.uid
+    })
+});
+
+exports.enkhmunkhNew2Function = functions.storage.object().onFinalize(async (object) => {
+    const { name, metadata: {firebaseStorageDownloadTokens } } = object;
+    const url = `https://firebasestorage.googleapis.com/v0/b/app-1-56fa0.appspot.com/o/${name}?alt=media&token=${firebaseStorageDownloadTokens}`;
+    await db.collection(`enkhmunkh/test/users`)
+    .doc(object.name).set({
+        url: url
+    })
+})
